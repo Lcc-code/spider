@@ -1,0 +1,64 @@
+# 发送请求获取响应
+# 解析网页
+# 保存数据
+# 这里的思路也参考了CSDN论坛上的一些博客。
+# 第一次上传代码，有很多不规范之处，比如变量的命名问题，请大家指出，我一定会虚心接受。谢谢大家
+一、获取商品详细信息的url
+    # 查看商品的url：
+    # https://item.jd.com/15432026455.html
+    # 我们可以看到商品的url是https://item.jd.com/{0}.html
+    # 所以我们需要首先查找到商品的id
+
+    # 分析京东的搜索框
+    #
+    url = https://search.jd.com/Search?keyword=电脑&enc=utf-8&wq=电脑&pvid=c1f4b5fb4da74d22b2fc8047a3d1b843
+    # 继续翻几页记录url
+    url1 = https://search.jd.com/Search?keyword=电脑&wq=电脑&page=3&s=50&click=0
+    url2 = https://search.jd.com/Search?keyword=电脑&wq=电脑&page=5&s=100&click=0
+    keyword     搜索关键词
+    wq          搜索关键词
+    page        当前页数
+    s           该属性可能与page有关
+
+
+
+    这里我们搜索url可以更改为
+
+    url2 = https://search.jd.com/Search?keyword={0}&enc=utf-8&qrst=1&rt=1&stop=1&vt=2&wq={1}&page={2}&s={3}&click=0
+    url = https://search.jd.com/Search?keyword={0}&wq={1}&page={2}&s={3}&click=0
+    查看商品id
+    封装在
+    <li data-sku="100008610496" data-spu="100008610496" ware-type="10" class="gl-item">
+    还有一部分的id情况在滑动之后产生，我们通过检查的network情况发现Request URL:
+    Request URL: https://search.jd.com/s_new.php?keyword=%E7%94%B5%E8%84%91&wq=%E7%94%B5%E8%84%91&page=2&s=25&scrolling=y&log_id=1590922177630.2521&tpl=1_M&isList=0&show_items=100007413706,100006295053,100003383325,100008610496,1110809080,100006581268,100005217597,100005171461,1381544225,100004901643,100011386554,100003383323,100006155170,100012885246,100004995386,100010879626,100001521818,10293516338,100007218425,1238701404,43432351135,100005603836,59816311010,1351245302,100006487373,100005182618,100006288373,1085794603,100010816812,11930425331
+    将url变量概括为：
+    Request URL: https://search.jd.com/s_new.php?keyword={0}&enc=utf-8&qrst=1&rt=1&stop=1&vt=2&page={1}&s=25&scrolling=y&log_id=1590922177630.2521&tpl=1_M&show_items={2}
+        keyword     搜索关键词
+        page        对比后发现就是当前搜索页的页数+1
+        show_items  第一批获取的30个商品id
+    这里
+
+https://search.jd.com/s_new.php?keyword={0}&enc=utf-8&qrst=1&rt=1&stop=1&vt=2&page={1}&s={2}&scrolling=y
+https://search.jd.com/s_new.php?keyword=%E7%94%B5%E8%84%91&enc=utf-8&qrst=1&rt=1&stop=1&vt=2&page=2&s=50&scrolling=y
+https://search.jd.com/s_new.php?keyword=电脑&enc=utf-8&qrst=1&rt=1&stop=1&vt=2&page=1&s=2&scrolling=y
+二、获取商品详细信息
+    # 这里我们总结几个需要爬取的属性：
+        1.name 商品名称
+        2.num
+        3.price 价格
+        4.detail (产品详细信息)
+    # 这里的思路类似于上面。这里具体的思路就记录在代码中了，一边写一边尝试的有改
+
+
+
+
+
+
+
+
+
+
+
+
+
+
